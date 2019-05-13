@@ -1,0 +1,10 @@
+[
+    {
+        "UID" : "testuid",
+        "macro_name" : "testname",
+        "dice" : 1,
+        "sides" : 1,
+        "modifier" : 0,
+        "modifier_type" : "individual"
+    }
+]

@@ -1,0 +1,26 @@
+{
+  "name": "roboevan",
+  "version": "1.0.0",
+  "description": "\"# roboevan\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardsew/roboevan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwardsew/roboevan/issues"
+  },
+  "homepage": "https://github.com/edwardsew/roboevan#readme",
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "bufferutil": "^4.0.0",
+    "discord.js": "^11.5.0",
+    "eslint": "^5.16.0"
+  }
+}
