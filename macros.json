@@ -1,10 +1,15 @@
-[
-    {
-        "UID" : "testuid",
-        "macro_name" : "testname",
-        "dice" : 1,
-        "sides" : 1,
-        "modifier" : 0,
-        "modifier_type" : "individual"
-    }
-]
+[{
+    "UID": "testuid",
+    "macro_name": "testname",
+    "dice": 1,
+    "sides": 1,
+    "modifier": 0,
+    "modifier_type": "individual"
+}, {
+    "UID": "166048536264179714",
+    "macro_name": "testmacro",
+    "dice": 3,
+    "sides": 20,
+    "modifier": 15,
+    "modifier_type": "i"
+}]

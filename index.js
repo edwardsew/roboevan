@@ -1,7 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const {prefix, token} = require('./config.json')
-const macros = require('./macros.json');
+const config = JSON.parse(fs.readFileSync('./config.json'));
+const prefix = config.prefix;
+const token = config.token;
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -19,22 +20,26 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
-    console.log(message.content);
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift.toLowerCase();
+    if(message.content){
 
-    if (!message.content.startsWith(prefix)) return;
-    if (message.author.bot) return;
+        const args = message.content.slice(prefix.length).split(' ');
+        const command = args.shift().toLowerCase();
 
-    if(!client.commands.has(command)) return;
+        if (!message.content.startsWith(prefix)) return;
+        if (message.author.bot) return;
 
-    try{
-        client.commands.get(command).execute(message, args);
+        if(!client.commands.has(command)) return;
+
+        try{
+            client.commands.get(command).execute(message, args);
+        }
+        catch (error){
+            console.error(error);
+            message.reply("There was an error trying to execute the command " + command);
+        }
     }
-    catch (error){
-        console.error(error);
-        message.reply("There was an error trying to execute the command " + command);
-    }
+
+    
 });
 
 client.login(token);

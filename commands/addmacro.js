@@ -1,46 +1,57 @@
 const fs = require('fs');
-const macros = require('./macros.json');
+var macros = fs.readFileSync("./macros.json");
 
 module.exports = {
     name: 'addmacro',
     description: 'Adds a macro to roll multiple dice with ease.',
     execute(message, args){
         if(!args.length){
-            return message.channel.send('No macro specified. Please specify a new macro.');
+            return message.reply('No macro specified. Please specify a new macro.');
         }
         else{
             try{
-                dice = args[2].split("d");
+                dice = args[1].split("d");
             }
             catch(err){
                 console.log(err);
-                message.channel.send("There was an issue getting the dice details.");
-                return macros;
+                return message.reply("There was an issue getting the dice details.");
             }
 
-            if(!Number.isInteger(dice[1]) && dice[1] > 0){
-                message.channel.send('The amount of dice must be a non negative integer');
-                return macros;
+            dice[0] = parseInt(dice[0]);
+            dice[1] = parseInt(dice[1]);
+
+            if(!dice[0] && dice[0] > 0){
+                return message.reply('The amount of dice must be a non negative integer');
             }
             
-            if(!Number.isInteger(dice[2]) && args[2] > 0){
-                message.channel.send('The number of sides on the dice must be a non negative integer');
-                return macros;
-            }
-            
-            if(!Number.isInteger(args[3])){
-                message.channel.send('The modifier must be an integer.');
-                return macros;
-            }
-            
-            if(args[4] !== "i" || args[4] !== "individual" || args[4] !== "t" || args[4] !== "total" || args[4] !== "n" || args[4] !== "none"){
-                message.channel.send('Please specify if there is a modifier, and if it is for the total or individual rolls');
-                return macros;
+            if(!dice[1] && dice[1] > 0){
+                return message.reply('The number of sides on the dice must be a non negative integer');
             }
 
+            var modifier_type_options = ["i","individual","t","total","n","none"];
+            var modifier = 0;
+            var modifier_type = "none";
+            
+            if(!parseInt(args[2]) && modifier_type_options.indexOf(args[2]) === -1){
+                return message.reply('The modifier must be an integer.');
+            }
+            else if(parseInt(args[2])){
+                modifier = parseInt(args[2]);
+            }
+            
+            if(args[3] && modifier_type_options.indexOf(args[3]) === -1){
+                return message.reply('Please specify if there is a modifier, and if it is for the total or individual rolls');
+            }
+            else if(args[3] === "i" || args[3] === "individual"){
+                modifier_type = "individual";
+            }
+            else if (args[3] === "t" || args[3] === "total"){
+                modifier_type = "total";
+            }
+            
             var array = JSON.parse(macros);
-            array.push({"UID": message.client.id, "macro_name" : args[1], "dice" : dice[1], "sides" : dice[2], "modifier" : args[3], "modifier_type" : args[4]});
-            message.channel.send("Macro " + args[1] + " Created!");
+            array.push({"UID": message.author.id, "macro_name" : args[0], "dice" : dice[0], "sides" : dice[1], "modifier" : modifier, "modifier_type" : modifier_type});
+            message.reply("Macro " + args[0] + " Created!");
             macros = JSON.stringify(array);
             
             fs.writeFile("./macros.json", macros, function(err){
